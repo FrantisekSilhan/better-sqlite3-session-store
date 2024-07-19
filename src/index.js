@@ -12,7 +12,8 @@ const schema = `
   (
     sid TEXT NOT NULL PRIMARY KEY,
     sess JSON NOT NULL,
-    expire TEXT NOT NULL
+    expire TEXT NOT NULL,
+    userId INTEGER
   )
 `;
 
@@ -78,7 +79,7 @@ module.exports = ({ Store }) => {
 
       const now = new Date().getTime();
       const expire = new Date(now + age).toISOString();
-      const entry = { sid, sess: JSON.stringify(sess), expire };
+      const entry = { sid, sess: JSON.stringify(sess), expire, userId: sess.userId };
 
       let res;
       try {
@@ -91,7 +92,8 @@ module.exports = ({ Store }) => {
           (
             @sid,
             @sess,
-            @expire
+            @expire,
+            @userId
           )
       `
           )
